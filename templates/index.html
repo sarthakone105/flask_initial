@@ -7,17 +7,34 @@
 {% block body %}
 <div class="container">
     <h1>Today smash</h1>
+
+    {% if tasks | length < 1%}
+    <h3>There are no tasks. Create one here!</h3>
+    {% else %}
     <table>
         <tr>
-            <th>Kya</th>
-            <th>kab</th>
-            <th>hua</th>
+          <th>Task</th>
+          <th>Added</th>
+          <th>Action</th>
         </tr>
+        {% for task in tasks%}
         <tr>
-            <td>brush</td>
-            <td>subah</td>
-            <td>karliya</td>
+          <td>{{task.content}}</td>
+          <td>{{task.created.strftime("%Y-%m-%d")}}</td>
+          <td>
+            <a href="/delete/{{task.id}}">Delete</a>
+            <br>
+            <a href="/update/{{task.id}}">Edit</a>
+          </td>
         </tr>
-    </table>
+        
+        {% endfor %}
+      </table>
+
+    {% endif %}
+    <form action="/" method="POST">
+        <input type="text" name="content" id="content">
+        <input type="button" value="Submit" id="add-btn">
+      </form>
 </div>
 {% endblock %}
