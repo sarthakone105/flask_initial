@@ -20,10 +20,31 @@ class MyTask(db.Model):
 
 
 
+# # Home page
+# @app.route("/", methods=["POST", "GET"])
+# def index():
+#     # add task
+#     if request.method == "POST":
+#         current_task = request.form['content']
+#         new_task = MyTask(content=current_task)
+        
+#         try:
+#             db.session.add(new_task)
+#             db.session.commit()
+#             return redirect("/")
+        
+#         except Exception as e:
+#             print(f"Error:{e}")
+#             return f"Error:{e}"
+    
+    
+#     else:
+#         tasks = MyTask.query.order_by(MyTask.created).all()
+#         return render_template('index.html', task=tasks)
+    
 
 @app.route("/", methods=["POST", "GET"])
 def index():
-    # add task
     if request.method == "POST":
         current_task = request.form['content']
         new_task = MyTask(content=current_task)
@@ -31,17 +52,18 @@ def index():
         try:
             db.session.add(new_task)
             db.session.commit()
+            print("Task added:", current_task)  # Debugging line
             return redirect("/")
         
         except Exception as e:
-            print(f"Error:{e}")
-            return f"Error:{e}"
-    
+            print(f"Error: {e}")
+            return f"Error: {e}"
     
     else:
         tasks = MyTask.query.order_by(MyTask.created).all()
-        return render_template('index.html', task=tasks)
-    
+        print("Tasks fetched:", tasks)  # Debugging line
+        return render_template('index.html', tasks=tasks)
+
     
 
 if __name__ == "__main__":
